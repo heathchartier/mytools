@@ -1,0 +1,12 @@
+{
+  "name": "Heath's Tools",
+  "short_name": "My Tools",
+  "description": "Lift Strong, Panel Calculator, Cut List Optimizer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d0d12",
+  "theme_color": "#0d0d12",
+  "icons": [
+    { "src": "/icons/liftstrong-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
