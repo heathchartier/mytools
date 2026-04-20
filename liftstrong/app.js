@@ -256,15 +256,14 @@ function renderPh(p, pi) {
     html += '</div>';
   }
   (ph.weeks || []).forEach(function(w, wi) {
-    var isFirst = wi === 0;
     html += '<div class="week-block">'
       + '<button class="week-hd" onclick="togW(this)">'
       + '<span class="week-title">' + esc(w.name || 'Week ' + (wi+1)) + '</span>'
       + '<span style="display:flex;align-items:center;gap:8px">'
       + '<span class="week-badge">' + (w.days && w.days.length || 0) + ' days</span>'
-      + '<span class="week-arr">' + (isFirst ? '&#9650;' : '&#9660;') + '</span>'
+      + '<span class="week-arr">&#9660;</span>'
       + '</span></button>'
-      + '<div class="week-body" style="display:' + (isFirst ? 'flex' : 'none') + '">';
+      + '<div class="week-body" style="display:none">';
     (w.days || []).forEach(function(d, di) { html += renderDay(d, di, p.id, pi, wi); });
     html += '</div></div>';
   });
@@ -275,7 +274,6 @@ function renderDay(day, di, pid, phi, wi) {
   var ec = day.exercises && day.exercises.length || 0;
   var tc = day.type === 'mobility' ? 'var(--acc3)' : day.type === 'trigger' ? 'var(--acc2)' : day.type === 'focus' ? 'var(--ok)' : 'var(--acc)';
   var tl = {workout:'Workout',mobility:'Mobility',trigger:'Trigger',focus:'Focus'}[day.type] || 'Workout';
-  var isFirstDay = wi === 0 && di === 0;
   var html = '<div class="day-card">'
     + '<button class="day-hd" onclick="togD(this)">'
     + '<div style="flex:1;min-width:0">'
@@ -287,9 +285,9 @@ function renderDay(day, di, pid, phi, wi) {
     + '</div>'
     + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:8px">'
     + '<button class="btn-p btn-xs" onclick="event.stopPropagation();startPW(\'' + pid + '\',' + phi + ',' + wi + ',' + di + ')">Start</button>'
-    + '<span style="color:var(--t3);font-size:11px">' + (isFirstDay ? '&#9650;' : '&#9660;') + '</span>'
+    + '<span style="color:var(--t3);font-size:11px">&#9660;</span>'
     + '</div></button>'
-    + '<div class="day-body" style="display:' + (isFirstDay ? 'flex' : 'none') + '">';
+    + '<div class="day-body" style="display:none">';
   if (day.isFocus) {
     html += '<div class="focus-box"><div class="focus-lbl">&#127919; Choose Your Weak Point &mdash; 2-3 exercises x 15 reps</div><div class="focus-grid">';
     (day.focusCats || []).forEach(function(c) {
