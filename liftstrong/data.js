@@ -5547,3 +5547,376 @@ var maps15PerformanceData = {
     }
   ]
 };
+
+// =============================================
+// MAPS 15 MUSCLE MOMMY
+// =============================================
+var maps15MuscleMommyData = {
+  id: 'maps-15-muscle-mommy-builtin', name: 'MAPS 15 Muscle Mommy', source: 'builtin',
+  description: "Muscle-building and metabolism-boosting program specifically for women who want a strong, firm and sculpted body — in only 15 minutes a day. Daily workouts designed around female physiology for maximum results with minimal time.",
+  difficulty: 'Beginner', duration: '90 days (3 phases)',
+  phases: [
+    {
+      name: 'Phase 1 — Foundation (Days 1-30)', objective: 'Build movement quality, glute activation, and full-body strength base.',
+      length: '30 days', sets: '2-3 sets', reps: '12-15 reps', rest: '30-45 seconds',
+      frequency: 'Daily — 15 minutes. Alternate between strength and activation days.',
+      weeks: [{
+        name: 'Days 1-30 (rotate through sessions)',
+        days: [
+          { name: 'Strength Day A', focus: 'Lower Body & Glutes', type: 'workout', exercises: [
+            {name:'Goblet Squat',sets:'3',reps:'12'},
+            {name:'Hip Thrust',sets:'3',reps:'15'},
+            {name:'Reverse Lunge',sets:'3',reps:'10 each leg'},
+            {name:'Glute Bridge Hold',sets:'2',reps:'20 sec hold'}
+          ]},
+          { name: 'Strength Day B', focus: 'Upper Body & Core', type: 'workout', exercises: [
+            {name:'Dumbbell Row',sets:'3',reps:'12 each arm'},
+            {name:'Push-Up (or knee push-up)',sets:'3',reps:'10'},
+            {name:'Shoulder Press',sets:'3',reps:'12'},
+            {name:'Dead Bug',sets:'2',reps:'8 each side'}
+          ]},
+          { name: 'Activation Day', focus: 'Glute & Core Activation', type: 'trigger', exercises: [
+            {name:'Clamshells',sets:'3',reps:'15 each'},
+            {name:'Donkey Kickback',sets:'3',reps:'15 each'},
+            {name:'Bird Dog',sets:'2',reps:'8 each side'},
+            {name:'Plank',sets:'2',reps:'20-30 sec'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 2 — Build (Days 31-60)', objective: 'Increase load and complexity. Build visible muscle and shape.',
+      length: '30 days', sets: '3 sets', reps: '10-12 reps', rest: '30-40 seconds',
+      frequency: 'Daily — 15 minutes. Heavier loads, more challenging movements.',
+      weeks: [{
+        name: 'Days 31-60 (rotate through sessions)',
+        days: [
+          { name: 'Lower Build Day', focus: 'Glutes & Legs', type: 'workout', exercises: [
+            {name:'Romanian Deadlift',sets:'3',reps:'10'},
+            {name:'Sumo Squat',sets:'3',reps:'12'},
+            {name:'Single-Leg Hip Thrust',sets:'3',reps:'10 each'},
+            {name:'Cable or Band Kickback',sets:'3',reps:'15 each'}
+          ]},
+          { name: 'Upper Build Day', focus: 'Arms, Back & Shoulders', type: 'workout', exercises: [
+            {name:'Dumbbell Curl',sets:'3',reps:'12'},
+            {name:'Tricep Overhead Extension',sets:'3',reps:'12'},
+            {name:'Lateral Raise',sets:'3',reps:'12'},
+            {name:'Bent Over Row',sets:'3',reps:'10'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 3 — Sculpt (Days 61-90)', objective: 'Peak definition and muscle tone with supersets.',
+      length: '30 days', sets: '3-4 sets', reps: '12-15 reps', rest: '20-30 seconds',
+      frequency: 'Daily — 15 minutes. Supersets for maximum metabolic effect.',
+      weeks: [{
+        name: 'Days 61-90 (superset format)',
+        days: [
+          { name: 'Lower Superset Day', focus: 'Glutes & Legs Supersets', type: 'workout', exercises: [
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Hip Thrust — SUPERSET',sets:'4',reps:'15'},
+            {name:'Sumo Squat — SUPERSET',sets:'4',reps:'12'},
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Donkey Kickback — SUPERSET',sets:'3',reps:'15 each'},
+            {name:'Reverse Lunge — SUPERSET',sets:'3',reps:'10 each'}
+          ]},
+          { name: 'Upper Superset Day', focus: 'Arms & Shoulders Supersets', type: 'workout', exercises: [
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Dumbbell Curl — SUPERSET',sets:'3',reps:'12'},
+            {name:'Overhead Tricep Extension — SUPERSET',sets:'3',reps:'12'},
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Lateral Raise — SUPERSET',sets:'3',reps:'12'},
+            {name:'Bent Over Row — SUPERSET',sets:'3',reps:'12'}
+          ]}
+        ]
+      }]
+    }
+  ]
+};
+
+// =============================================
+// MAPS 15 STRONG
+// =============================================
+var maps15StrongData = {
+  id: 'maps-15-strong-builtin', name: 'MAPS 15 Strong', source: 'builtin',
+  description: "Build total-body strength by combining conventional exercises with unconventional strongman movements — in only 15 minutes a day. Progressive daily sessions that make you genuinely strong, not just fit.",
+  difficulty: 'Intermediate', duration: '90 days (3 phases)',
+  phases: [
+    {
+      name: 'Phase 1 — Strength Foundation (Days 1-30)', objective: 'Learn strongman movements and build base strength.',
+      length: '30 days', sets: '3 sets', reps: '8-10 reps', rest: '45-60 seconds',
+      frequency: 'Daily — 15 minutes.',
+      weeks: [{
+        name: 'Days 1-30 (rotate through sessions)',
+        days: [
+          { name: 'Conventional Strength Day', focus: 'Big Compound Lifts', type: 'workout', exercises: [
+            {name:'Barbell or DB Deadlift',sets:'3',reps:'6-8'},
+            {name:'Overhead Press',sets:'3',reps:'8'},
+            {name:'Barbell Row',sets:'3',reps:'8'}
+          ]},
+          { name: 'Strongman Day', focus: 'Unconventional Strength', type: 'workout', exercises: [
+            {name:'Farmer Carry',sets:'4',reps:'30 yards'},
+            {name:'Sandbag or DB Bear Hug Squat',sets:'3',reps:'8'},
+            {name:'Suitcase Deadlift',sets:'3',reps:'6 each side'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 2 — Strength Load (Days 31-60)', objective: 'Add significant load. Mix conventional and strongman for total-body power.',
+      length: '30 days', sets: '4 sets', reps: '5-8 reps', rest: '60-75 seconds',
+      frequency: 'Daily — 15 minutes. Heavier every session.',
+      weeks: [{
+        name: 'Days 31-60',
+        days: [
+          { name: 'Heavy Lift Day', focus: 'Max Strength', type: 'workout', exercises: [
+            {name:'Barbell Deadlift (heavy)',sets:'4',reps:'5'},
+            {name:'Overhead Press (heavy)',sets:'4',reps:'5'},
+            {name:'Pull-Up or Weighted Row',sets:'4',reps:'5'}
+          ]},
+          { name: 'Strongman Carry Day', focus: 'Loaded Carries & Odd Objects', type: 'workout', exercises: [
+            {name:'Heavy Farmer Carry',sets:'5',reps:'40 yards'},
+            {name:'Zercher Squat or Sandbag Squat',sets:'4',reps:'6'},
+            {name:'Log Press or Axle Press',sets:'4',reps:'5'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 3 — Strength Peak (Days 61-90)', objective: 'Peak strength across all movements. Set PRs.',
+      length: '30 days', sets: '5 sets', reps: '3-5 reps', rest: '90 seconds',
+      frequency: 'Daily — 15 minutes. Chase personal records.',
+      weeks: [{
+        name: 'Days 61-90',
+        days: [
+          { name: 'PR Day — Conventional', focus: 'Max Effort Big Lifts', type: 'workout', exercises: [
+            {name:'Deadlift — work to heavy 3',sets:'5',reps:'3'},
+            {name:'Overhead Press — work to heavy 3',sets:'5',reps:'3'}
+          ]},
+          { name: 'PR Day — Strongman', focus: 'Max Carry & Odd Object', type: 'workout', exercises: [
+            {name:'Max Farmer Carry — heaviest possible',sets:'3',reps:'40 yards'},
+            {name:'Sandbag or Stone to Shoulder',sets:'5',reps:'3 each side'}
+          ]}
+        ]
+      }]
+    }
+  ]
+};
+
+// =============================================
+// MAPS 15 FORTY PLUS
+// =============================================
+var maps15FortyPlusData = {
+  id: 'maps-15-forty-plus-builtin', name: 'MAPS 15 Forty Plus', source: 'builtin',
+  description: "Built for busy people over 40. Enhances strength, builds lean muscle, and burns stubborn body fat in daily 15-minute workouts. Includes mobility and longevity exercises specifically for the challenges of getting fit after 40.",
+  difficulty: 'Beginner', duration: '90 days (3 phases)',
+  phases: [
+    {
+      name: 'Phase 1 — Rebuild (Days 1-30)', objective: 'Re-establish movement quality, joint health, and foundational strength.',
+      length: '30 days', sets: '2-3 sets', reps: '12-15 reps', rest: '45-60 seconds',
+      frequency: 'Daily — 15 minutes. Alternate strength and mobility days.',
+      weeks: [{
+        name: 'Days 1-30',
+        days: [
+          { name: 'Strength Day', focus: 'Full Body Gentle Strength', type: 'workout', exercises: [
+            {name:'Goblet Squat (slow eccentric)',sets:'3',reps:'12'},
+            {name:'Dumbbell Row',sets:'3',reps:'12 each'},
+            {name:'Hip Thrust',sets:'3',reps:'15'},
+            {name:'Face Pull or Band Pull-Apart',sets:'2',reps:'15'}
+          ]},
+          { name: 'Mobility Day', focus: 'Joint Health & Flexibility', type: 'mobility', exercises: [
+            {name:'Hip Flexor Stretch',sets:'2',reps:'45 sec each'},
+            {name:'Thoracic Rotation',sets:'2',reps:'10 each side'},
+            {name:'90/90 Hip Stretch',sets:'2',reps:'45 sec each'},
+            {name:'Cat-Cow',sets:'2',reps:'10'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 2 — Build (Days 31-60)', objective: 'Increase strength and add muscle. Prioritize recovery.',
+      length: '30 days', sets: '3 sets', reps: '8-12 reps', rest: '60-75 seconds',
+      frequency: 'Daily — 15 minutes. Monitor soreness — if it lingers past 48 hrs, dial back.',
+      weeks: [{
+        name: 'Days 31-60',
+        days: [
+          { name: 'Strength Build Day', focus: 'Progressive Compound Strength', type: 'workout', exercises: [
+            {name:'Deadlift or Trap Bar Deadlift',sets:'3',reps:'8'},
+            {name:'Bench Press or DB Press',sets:'3',reps:'10'},
+            {name:'Cable or DB Row',sets:'3',reps:'10'},
+            {name:'Overhead Press',sets:'3',reps:'10'}
+          ]},
+          { name: 'Active Recovery Day', focus: 'Longevity & Mobility', type: 'mobility', exercises: [
+            {name:'Walk (brisk)',sets:'1',reps:'10 min'},
+            {name:'Full Body Foam Roll',sets:'1',reps:'5 min'},
+            {name:'Hip & Shoulder Mobility Flow',sets:'1',reps:'5 min'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 3 — Strength & Vitality (Days 61-90)', objective: 'Build real strength while maintaining joint health and vitality.',
+      length: '30 days', sets: '3-4 sets', reps: '6-10 reps', rest: '90 seconds',
+      frequency: 'Daily — 15 minutes. This is ongoing — re-run all 3 phases cyclically.',
+      weeks: [{
+        name: 'Days 61-90',
+        days: [
+          { name: 'Heavy Strength Day', focus: 'Max Strength for Longevity', type: 'workout', exercises: [
+            {name:'Barbell Squat or Trap Bar Deadlift',sets:'4',reps:'6-8'},
+            {name:'Weighted Pull-Up or Heavy Row',sets:'4',reps:'6-8'},
+            {name:'Bench or DB Press',sets:'4',reps:'6-8'},
+            {name:'Farmer Carry',sets:'3',reps:'40 yards'}
+          ]},
+          { name: 'Mobility & Core Day', focus: 'Longevity Foundation', type: 'mobility', exercises: [
+            {name:'Zone 2 Walk',sets:'1',reps:'10 min'},
+            {name:'Yoga Hip Sequence',sets:'1',reps:'5 min'},
+            {name:'Plank',sets:'3',reps:'30-45 sec'}
+          ]}
+        ]
+      }]
+    }
+  ]
+};
+
+// =============================================
+// MAPS 15 POWERLIFT
+// =============================================
+var maps15PowerliftData = {
+  id: 'maps-15-powerlift-builtin', name: 'MAPS 15 Powerlift', source: 'builtin',
+  description: "Maximize your strength in the squat, deadlift, bench press, and overhead press in only 15 minutes a day. A strength-focused program for busy people who want to hit new PRs without spending hours in the gym.",
+  difficulty: 'Intermediate', duration: '90 days (3 phases)',
+  phases: [
+    {
+      name: 'Phase 1 — Technical Foundation (Days 1-30)', objective: 'Build perfect technique and strength base on the four main lifts.',
+      length: '30 days', sets: '3 sets', reps: '5 reps', rest: '2-3 minutes',
+      frequency: 'Daily — 15 minutes. Each day focuses on one or two of the four lifts.',
+      weeks: [{
+        name: 'Days 1-30 (rotate through lifts)',
+        days: [
+          { name: 'Squat & Deadlift Day', focus: 'Lower Body Power', type: 'workout', exercises: [
+            {name:'Barbell Squat',sets:'3',reps:'5 (add weight each session)'},
+            {name:'Barbell Deadlift',sets:'3',reps:'5 (add weight each session)'}
+          ]},
+          { name: 'Press Day', focus: 'Upper Body Power', type: 'workout', exercises: [
+            {name:'Barbell Bench Press',sets:'3',reps:'5 (add weight each session)'},
+            {name:'Barbell Overhead Press',sets:'3',reps:'5 (add weight each session)'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 2 — Strength Load (Days 31-60)', objective: 'Push loads heavier. Begin peaking.',
+      length: '30 days', sets: '4 sets', reps: '3-5 reps', rest: '2-3 minutes',
+      frequency: 'Daily — 15 minutes. Alternate between heavy lower and heavy upper.',
+      weeks: [{
+        name: 'Days 31-60',
+        days: [
+          { name: 'Heavy Lower Day', focus: 'Squat & Deadlift Max', type: 'workout', exercises: [
+            {name:'Barbell Squat (heavy)',sets:'4',reps:'3-5'},
+            {name:'Barbell Deadlift (heavy)',sets:'3',reps:'3'}
+          ]},
+          { name: 'Heavy Upper Day', focus: 'Bench & Overhead Max', type: 'workout', exercises: [
+            {name:'Barbell Bench Press (heavy)',sets:'4',reps:'3-5'},
+            {name:'Barbell Overhead Press (heavy)',sets:'4',reps:'3-5'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 3 — Peak & PR (Days 61-90)', objective: 'Peak all four lifts and set personal records.',
+      length: '30 days', sets: '5 sets', reps: '1-3 reps', rest: '3-5 minutes',
+      frequency: 'Daily — 15 minutes. Work up to near-max singles and doubles.',
+      weeks: [{
+        name: 'Days 61-90 (PR attempts)',
+        days: [
+          { name: 'Squat PR Day', focus: 'Squat Max Attempt', type: 'workout', exercises: [
+            {name:'Barbell Squat — work to 1-3 rep max',sets:'5',reps:'work up to max'}
+          ]},
+          { name: 'Deadlift PR Day', focus: 'Deadlift Max Attempt', type: 'workout', exercises: [
+            {name:'Barbell Deadlift — work to 1-3 rep max',sets:'5',reps:'work up to max'}
+          ]},
+          { name: 'Bench PR Day', focus: 'Bench Max Attempt', type: 'workout', exercises: [
+            {name:'Barbell Bench Press — work to 1-3 rep max',sets:'5',reps:'work up to max'}
+          ]},
+          { name: 'Overhead PR Day', focus: 'OHP Max Attempt', type: 'workout', exercises: [
+            {name:'Barbell Overhead Press — work to 1-3 rep max',sets:'5',reps:'work up to max'}
+          ]}
+        ]
+      }]
+    }
+  ]
+};
+
+// =============================================
+// MAPS 15 SYMMETRY
+// =============================================
+var maps15SymmetryData = {
+  id: 'maps-15-symmetry-builtin', name: 'MAPS 15 Symmetry', source: 'builtin',
+  description: "Build a balanced, sculpted, and symmetrical body with short and effective daily 15-minute workouts. Uses unilateral (single-side) training to correct imbalances and build even, aesthetic muscle — for busy people who want to look as good as they feel.",
+  difficulty: 'Intermediate', duration: '90 days (3 phases)',
+  phases: [
+    {
+      name: 'Phase 1 — Unilateral Foundation (Days 1-30)', objective: 'Identify and begin correcting left/right imbalances with single-side training.',
+      length: '30 days', sets: '2-3 sets', reps: '10-12 each side', rest: '30-45 seconds',
+      frequency: 'Daily — 15 minutes. Always start with the weaker side.',
+      weeks: [{
+        name: 'Days 1-30 (rotate through sessions)',
+        days: [
+          { name: 'Lower Unilateral Day', focus: 'Single-Leg Strength', type: 'workout', exercises: [
+            {name:'Single-Leg Romanian Deadlift',sets:'3',reps:'10 each leg'},
+            {name:'Reverse Lunge',sets:'3',reps:'10 each leg'},
+            {name:'Single-Leg Glute Bridge',sets:'3',reps:'12 each leg'}
+          ]},
+          { name: 'Upper Unilateral Day', focus: 'Single-Arm Strength', type: 'workout', exercises: [
+            {name:'Single-Arm Dumbbell Row',sets:'3',reps:'10 each arm'},
+            {name:'Single-Arm Dumbbell Press',sets:'3',reps:'10 each arm'},
+            {name:'Single-Arm Curl',sets:'3',reps:'12 each arm'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 2 — Symmetry Build (Days 31-60)', objective: 'Increase load and address lagging body parts.',
+      length: '30 days', sets: '3 sets', reps: '8-10 each side', rest: '45-60 seconds',
+      frequency: 'Daily — 15 minutes. Track if weaker side is catching up.',
+      weeks: [{
+        name: 'Days 31-60',
+        days: [
+          { name: 'Lower Build Day', focus: 'Legs & Glutes Balance', type: 'workout', exercises: [
+            {name:'Bulgarian Split Squat',sets:'3',reps:'8-10 each leg'},
+            {name:'Single-Leg Deadlift (weighted)',sets:'3',reps:'8 each leg'},
+            {name:'Single-Leg Hip Thrust',sets:'3',reps:'10 each'}
+          ]},
+          { name: 'Upper Build Day', focus: 'Upper Body Balance', type: 'workout', exercises: [
+            {name:'Single-Arm Cable or DB Row (heavy)',sets:'3',reps:'8-10 each'},
+            {name:'Alternating DB Press',sets:'3',reps:'8-10 each arm'},
+            {name:'Single-Arm Lateral Raise',sets:'3',reps:'12 each'}
+          ]}
+        ]
+      }]
+    },
+    {
+      name: 'Phase 3 — Sculpt & Balance (Days 61-90)', objective: 'Peak symmetry and aesthetic definition.',
+      length: '30 days', sets: '3-4 sets', reps: '10-15 each side', rest: '30 seconds',
+      frequency: 'Daily — 15 minutes. Superset format for maximum pump and definition.',
+      weeks: [{
+        name: 'Days 61-90 (superset format)',
+        days: [
+          { name: 'Lower Superset Day', focus: 'Legs Symmetry Supersets', type: 'workout', exercises: [
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Bulgarian Split Squat — SUPERSET',sets:'4',reps:'10 each'},
+            {name:'Single-Leg Hip Thrust — SUPERSET',sets:'4',reps:'12 each'},
+            {name:'Single-Leg Calf Raise',sets:'3',reps:'15 each'}
+          ]},
+          { name: 'Upper Superset Day', focus: 'Upper Symmetry Supersets', type: 'workout', exercises: [
+            {name:'— SUPERSET —',sets:'',reps:'',notes:'separator'},
+            {name:'Single-Arm Row — SUPERSET',sets:'4',reps:'10 each'},
+            {name:'Single-Arm Press — SUPERSET',sets:'4',reps:'10 each'},
+            {name:'Alternating Curl',sets:'3',reps:'12 each arm'}
+          ]}
+        ]
+      }]
+    }
+  ]
+};

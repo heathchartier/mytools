@@ -18,51 +18,56 @@ function allProgs() {
   var del = DB.get('del_bi', []);
   var list = [];
   var builtins = [
-    {id:'maps-symmetry-builtin',    prog:MAPS},
-    {id:'maps-anabolic-builtin',    prog:MAPS_ANABOLIC},
-    {id:'maps-aesthetic-builtin',   prog:MAPS_AESTHETIC},
-    {id:'maps-performance-builtin', prog:MAPS_PERFORMANCE},
-    {id:'maps-muscle-mommy-builtin',prog:MAPS_MUSCLE_MOMMY},
-    {id:'maps-transform-builtin',   prog:MAPS_TRANSFORM},
-    {id:'maps-15-minutes-builtin',  prog:MAPS_15_MINUTES},
-    {id:'maps-powerlift-builtin',   prog:MAPS_POWERLIFT},
-    {id:'maps-strong-builtin',      prog:MAPS_STRONG},
-    {id:'maps-cardio-builtin',      prog:MAPS_CARDIO},
-    {id:'maps-st-builtin',          prog:MAPS_ST},
-    {id:'kb4a-builtin',             prog:KB4A},
-    {id:'no-bs-6pack-builtin',      prog:NO_BS_6PACK},
-    {id:'maps-split-builtin',       prog:mapsSplitData},
-    {id:'stronglifts-5x5-builtin',  prog:strongLifts5x5Data},
-    {id:'maps-hiit-builtin',        prog:mapsHIITData},
-    {id:'maps-back-mod-builtin',    prog:mapsBackModData},
-    {id:'maps-chest-mod-builtin',   prog:mapsChestModData},
-    {id:'maps-prime-builtin',              prog:MAPS_PRIME},
-    {id:'maps-prime-pro-builtin',          prog:MAPS_PRIME_PRO},
-    {id:'maps-anabolic-advanced-builtin',  prog:mapsAnabolicAdvancedData},
-    {id:'maps-anywhere-builtin',           prog:mapsAnywhereData},
-    {id:'maps-starter-builtin',            prog:mapsStarterData},
-    {id:'maps-oldtime-strength-builtin',   prog:mapsOldtimeStrengthData},
-    {id:'maps-resistance-builtin',         prog:mapsResistanceData},
-    {id:'maps-40plus-builtin',             prog:maps40PlusData},
-    {id:'landmine4aesthetics-builtin',     prog:landmine4AestheticsData},
-    {id:'maps-abs-mod-builtin',            prog:mapsAbsModData},
-    {id:'maps-butt-mod-builtin',           prog:mapsButtModData},
-    {id:'maps-shoulder-mod-builtin',       prog:mapsShoulderModData},
-    {id:'maps-biceps-mod-builtin',         prog:mapsBicepsModData},
-    {id:'maps-triceps-mod-builtin',        prog:mapsTricepsModData},
-    {id:'maps-hamstrings-mod-builtin',     prog:mapsHamstringsModData},
-    {id:'maps-quads-mod-builtin',          prog:mapsQuadsModData},
-    {id:'maps-calves-mod-builtin',         prog:mapsCalvesModData},
-    {id:'maps-hip-pain-mod-builtin',       prog:mapsHipPainModData},
-    {id:'maps-ocr-builtin',                prog:mapsOCRData},
-    {id:'maps-ped-builtin',                prog:mapsPEDData},
-    {id:'maps-bands-builtin',              prog:mapsBandsData},
-    {id:'maps-performance-advanced-builtin', prog:mapsPerformanceAdvancedData},
-    {id:'maps-glp1-builtin',               prog:mapsGLP1Data},
-    {id:'maps-longevity-builtin',          prog:mapsLongevityData},
-    {id:'maps-ppl-builtin',                prog:mapsPPLData},
-    {id:'maps-great-eight-builtin',        prog:mapsGreatEightData},
-    {id:'maps-15-performance-builtin',     prog:maps15PerformanceData}
+    {id:'stronglifts-5x5-builtin',            prog:strongLifts5x5Data},
+    {id:'maps-symmetry-builtin',              prog:MAPS},
+    {id:'maps-anabolic-builtin',              prog:MAPS_ANABOLIC},
+    {id:'maps-anabolic-advanced-builtin',     prog:mapsAnabolicAdvancedData},
+    {id:'maps-performance-builtin',           prog:MAPS_PERFORMANCE},
+    {id:'maps-performance-advanced-builtin',  prog:mapsPerformanceAdvancedData},
+    {id:'maps-aesthetic-builtin',             prog:MAPS_AESTHETIC},
+    {id:'maps-muscle-mommy-builtin',          prog:MAPS_MUSCLE_MOMMY},
+    {id:'maps-40plus-builtin',                prog:maps40PlusData},
+    {id:'maps-anywhere-builtin',              prog:mapsAnywhereData},
+    {id:'maps-prime-builtin',                 prog:MAPS_PRIME},
+    {id:'maps-prime-pro-builtin',             prog:MAPS_PRIME_PRO},
+    {id:'maps-hiit-builtin',                  prog:mapsHIITData},
+    {id:'maps-split-builtin',                 prog:mapsSplitData},
+    {id:'maps-strong-builtin',                prog:MAPS_STRONG},
+    {id:'maps-starter-builtin',               prog:mapsStarterData},
+    {id:'maps-ped-builtin',                   prog:mapsPEDData},
+    {id:'maps-ocr-builtin',                   prog:mapsOCRData},
+    {id:'maps-powerlift-builtin',             prog:MAPS_POWERLIFT},
+    {id:'maps-st-builtin',                    prog:MAPS_ST},
+    {id:'maps-resistance-builtin',            prog:mapsResistanceData},
+    {id:'maps-bands-builtin',                 prog:mapsBandsData},
+    {id:'maps-cardio-builtin',                prog:MAPS_CARDIO},
+    {id:'maps-oldtime-strength-builtin',      prog:mapsOldtimeStrengthData},
+    {id:'maps-transform-builtin',             prog:MAPS_TRANSFORM},
+    {id:'maps-longevity-builtin',             prog:mapsLongevityData},
+    {id:'maps-glp1-builtin',                  prog:mapsGLP1Data},
+    {id:'maps-great-eight-builtin',           prog:mapsGreatEightData},
+    {id:'maps-ppl-builtin',                   prog:mapsPPLData},
+    {id:'maps-15-minutes-builtin',            prog:MAPS_15_MINUTES},
+    {id:'maps-15-performance-builtin',        prog:maps15PerformanceData},
+    {id:'maps-15-muscle-mommy-builtin',       prog:maps15MuscleMommyData},
+    {id:'maps-15-strong-builtin',             prog:maps15StrongData},
+    {id:'maps-15-forty-plus-builtin',         prog:maps15FortyPlusData},
+    {id:'maps-15-powerlift-builtin',          prog:maps15PowerliftData},
+    {id:'maps-15-symmetry-builtin',           prog:maps15SymmetryData},
+    {id:'maps-abs-mod-builtin',               prog:mapsAbsModData},
+    {id:'maps-butt-mod-builtin',              prog:mapsButtModData},
+    {id:'maps-back-mod-builtin',              prog:mapsBackModData},
+    {id:'maps-shoulder-mod-builtin',          prog:mapsShoulderModData},
+    {id:'maps-chest-mod-builtin',             prog:mapsChestModData},
+    {id:'maps-biceps-mod-builtin',            prog:mapsBicepsModData},
+    {id:'maps-triceps-mod-builtin',           prog:mapsTricepsModData},
+    {id:'maps-hamstrings-mod-builtin',        prog:mapsHamstringsModData},
+    {id:'maps-hip-pain-mod-builtin',          prog:mapsHipPainModData},
+    {id:'maps-quads-mod-builtin',             prog:mapsQuadsModData},
+    {id:'maps-calves-mod-builtin',            prog:mapsCalvesModData},
+    {id:'no-bs-6pack-builtin',                prog:NO_BS_6PACK},
+    {id:'kb4a-builtin',                       prog:KB4A},
+    {id:'landmine4aesthetics-builtin',        prog:landmine4AestheticsData}
   ];
   builtins.forEach(function(b){
     if (del.indexOf(b.id) === -1) list.push(b.prog);
@@ -612,11 +617,13 @@ function setZone(progId, zoneId, val) {
 
 function togW(el) {
   var b = el.nextElementSibling;
-  b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+  var cur = b.style.display || window.getComputedStyle(b).display;
+  b.style.display = (cur === 'none') ? 'flex' : 'none';
 }
 function togD(el) {
   var b = el.nextElementSibling;
-  b.style.display = b.style.display === 'none' ? 'flex' : 'none';
+  var cur = b.style.display || window.getComputedStyle(b).display;
+  b.style.display = (cur === 'none') ? 'flex' : 'none';
 }
 
 function delProg() {
@@ -1028,7 +1035,7 @@ async function extractPDF(file) {
 }
 
 async function parseAI(content, filename) {
-  var resp = await fetch('https://liftstrong-proxy.heathchartier.workers.dev/api/claude', {
+  var resp = await fetch('https://YOUR-WORKER-NAME.YOUR-USERNAME.workers.dev/api/claude', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
