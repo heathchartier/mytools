@@ -1124,3 +1124,26 @@ canvas { width: 100% !important; }
   .pro-move-row { flex-direction: column; gap: 2px; }
   .pro-move-reps { max-width: 100%; text-align: left; }
 }
+
+/* ── SEARCH ─────────────────────────────────────────────────── */
+.search-wrap {
+  padding: 0 14px 12px;
+}
+.search-inp {
+  width: 100%;
+  background: var(--bg2);
+  border: 1.5px solid var(--brd);
+  border-radius: 8px;
+  color: var(--t1);
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+.search-inp:focus {
+  border-color: var(--acc);
+}
+.search-inp::placeholder {
+  color: var(--t3);
+}

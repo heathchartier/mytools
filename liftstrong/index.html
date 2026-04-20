@@ -44,12 +44,14 @@
     <div class="sec-lbl">Recent Workouts</div>
     <div class="card" id="d-recent"></div>
     <div class="sec-lbl">Programs</div>
+    <div class="search-wrap"><input class="search-inp" id="dash-search" type="text" placeholder="&#128269; Search programs..." oninput="rDash()" autocomplete="off"></div>
     <div class="card" id="d-progs"></div>
   </section>
 
   <!-- PROGRAMS -->
   <section id="view-programs" class="view">
     <div class="ph"><div><h1 class="ptitle">Programs</h1><p class="psub">Import or create plans</p></div><button class="btn-s btn-sm" onclick="openCP()">+ Create</button></div>
+    <div class="search-wrap"><input class="search-inp" id="prog-search" type="text" placeholder="&#128269; Search programs..." oninput="rProgs()" autocomplete="off"></div>
     <div id="save-banner" class="save-banner">&#10003; Program saved! It will be here every time you return.</div>
     <div id="uz" class="upload-zone" onclick="document.getElementById('fi').click()" ondragover="doDO(event)" ondragleave="doDL()" ondrop="doDrop(event)">
       <input type="file" id="fi" accept=".pdf,.txt" onchange="doFS(event)">

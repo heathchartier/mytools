@@ -160,8 +160,10 @@ function rDash() {
 
   var pl = document.getElementById('d-progs');
   var pg = allProgs();
+  var dashQ = (document.getElementById('dash-search') && document.getElementById('dash-search').value || '').toLowerCase().trim();
+  if (dashQ) pg = pg.filter(function(p){ return p.name.toLowerCase().indexOf(dashQ) !== -1 || (p.description || '').toLowerCase().indexOf(dashQ) !== -1; });
   if (!pg.length) {
-    pl.innerHTML = '<div class="empty"><div class="esub">No programs yet</div></div>';
+    pl.innerHTML = '<div class="empty"><div class="esub">' + (dashQ ? 'No programs match "' + esc(dashQ) + '"' : 'No programs yet') + '</div></div>';
   } else {
     pl.innerHTML = pg.map(function(p) {
       var phaseStr = p.type === 'corrective' ? 'Corrective' : ((p.phases && p.phases.length || 0) + ' phases');
@@ -178,8 +180,11 @@ function rDash() {
 function rProgs() {
   var pl = document.getElementById('prog-list');
   var pg = allProgs();
+  var q = (document.getElementById('prog-search') && document.getElementById('prog-search').value || '').toLowerCase().trim();
+  if (q) pg = pg.filter(function(p){ return p.name.toLowerCase().indexOf(q) !== -1 || (p.description || '').toLowerCase().indexOf(q) !== -1; });
   var empty = document.getElementById('prog-empty');
   empty.style.display = pg.length ? 'none' : 'flex';
+  empty.querySelector && (empty.querySelector('.esub') || {}).textContent && (empty.querySelector('.esub').textContent = q ? 'No programs match "' + q + '"' : 'Upload a PDF or create a program manually');
   if (!pg.length) { pl.innerHTML = ''; return; }
   pl.innerHTML = pg.map(function(p) {
     var pc = p.phases && p.phases.length || 0;
@@ -251,14 +256,15 @@ function renderPh(p, pi) {
     html += '</div>';
   }
   (ph.weeks || []).forEach(function(w, wi) {
+    var isFirst = wi === 0;
     html += '<div class="week-block">'
       + '<button class="week-hd" onclick="togW(this)">'
       + '<span class="week-title">' + esc(w.name || 'Week ' + (wi+1)) + '</span>'
       + '<span style="display:flex;align-items:center;gap:8px">'
       + '<span class="week-badge">' + (w.days && w.days.length || 0) + ' days</span>'
-      + '<span class="week-arr">&#9660;</span>'
+      + '<span class="week-arr">' + (isFirst ? '&#9650;' : '&#9660;') + '</span>'
       + '</span></button>'
-      + '<div class="week-body">';
+      + '<div class="week-body" style="display:' + (isFirst ? 'flex' : 'none') + '">';
     (w.days || []).forEach(function(d, di) { html += renderDay(d, di, p.id, pi, wi); });
     html += '</div></div>';
   });
@@ -269,6 +275,7 @@ function renderDay(day, di, pid, phi, wi) {
   var ec = day.exercises && day.exercises.length || 0;
   var tc = day.type === 'mobility' ? 'var(--acc3)' : day.type === 'trigger' ? 'var(--acc2)' : day.type === 'focus' ? 'var(--ok)' : 'var(--acc)';
   var tl = {workout:'Workout',mobility:'Mobility',trigger:'Trigger',focus:'Focus'}[day.type] || 'Workout';
+  var isFirstDay = wi === 0 && di === 0;
   var html = '<div class="day-card">'
     + '<button class="day-hd" onclick="togD(this)">'
     + '<div style="flex:1;min-width:0">'
@@ -280,9 +287,9 @@ function renderDay(day, di, pid, phi, wi) {
     + '</div>'
     + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:8px">'
     + '<button class="btn-p btn-xs" onclick="event.stopPropagation();startPW(\'' + pid + '\',' + phi + ',' + wi + ',' + di + ')">Start</button>'
-    + '<span style="color:var(--t3);font-size:11px">&#9660;</span>'
+    + '<span style="color:var(--t3);font-size:11px">' + (isFirstDay ? '&#9650;' : '&#9660;') + '</span>'
     + '</div></button>'
-    + '<div class="day-body">';
+    + '<div class="day-body" style="display:' + (isFirstDay ? 'flex' : 'none') + '">';
   if (day.isFocus) {
     html += '<div class="focus-box"><div class="focus-lbl">&#127919; Choose Your Weak Point &mdash; 2-3 exercises x 15 reps</div><div class="focus-grid">';
     (day.focusCats || []).forEach(function(c) {
@@ -617,13 +624,17 @@ function setZone(progId, zoneId, val) {
 
 function togW(el) {
   var b = el.nextElementSibling;
-  var cur = b.style.display || window.getComputedStyle(b).display;
-  b.style.display = (cur === 'none') ? 'flex' : 'none';
+  var isOpen = b.style.display !== 'none';
+  b.style.display = isOpen ? 'none' : 'flex';
+  var arr = el.querySelector('.week-arr');
+  if (arr) arr.innerHTML = isOpen ? '&#9660;' : '&#9650;';
 }
 function togD(el) {
   var b = el.nextElementSibling;
-  var cur = b.style.display || window.getComputedStyle(b).display;
-  b.style.display = (cur === 'none') ? 'flex' : 'none';
+  var isOpen = b.style.display !== 'none';
+  b.style.display = isOpen ? 'none' : 'flex';
+  var arr = el.querySelector('span[style*="color:var(--t3)"]');
+  if (arr) arr.innerHTML = isOpen ? '&#9660;' : '&#9650;';
 }
 
 function delProg() {
