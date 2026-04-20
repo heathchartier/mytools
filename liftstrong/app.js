@@ -1028,7 +1028,7 @@ async function extractPDF(file) {
 }
 
 async function parseAI(content, filename) {
-  var resp = await fetch('https://YOUR-WORKER-NAME.YOUR-USERNAME.workers.dev/api/claude', {
+  var resp = await fetch('https://liftstrong-proxy.heathchartier.workers.dev/api/claude', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
