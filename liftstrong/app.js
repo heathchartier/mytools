@@ -7,13 +7,13 @@ var DB = {
     try { localStorage.setItem('ls_' + k, JSON.stringify(v)); } catch(e) {}
   }
 };
-
+ 
 var uProgs = DB.get('programs', []);
 var hist   = DB.get('history', []);
 var prs    = DB.get('prs', {});
 var aw = null, wt = null, wst = null, curPid = null, curPhi = 0;
 var rtIv = null, rtTot = 60, rtRem = 60, rtRun = false;
-
+ 
 function allProgs() {
   var del = DB.get('del_bi', []);
   var list = [];
@@ -74,14 +74,14 @@ function allProgs() {
   });
   return list.concat(uProgs);
 }
-
+ 
 // ===== ROUTING =====
 function showView(id) {
   var views = document.querySelectorAll('.view');
   for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
   var el = document.getElementById('view-' + id);
   if (el) el.classList.add('active');
-
+ 
   // mobile tabs
   var tabs = document.querySelectorAll('.tab');
   for (var j = 0; j < tabs.length; j++) {
@@ -92,14 +92,14 @@ function showView(id) {
   for (var k = 0; k < nds.length; k++) {
     nds[k].classList.toggle('active', nds[k].getAttribute('data-view') === id);
   }
-
+ 
   window.scrollTo(0, 0);
   if (id === 'dashboard') rDash();
   if (id === 'programs')  rProgs();
   if (id === 'history')   rHist();
   if (id === 'progress')  rProg();
 }
-
+ 
 // wire up tab buttons and desktop nav
 document.addEventListener('DOMContentLoaded', function() {
   var tabs = document.querySelectorAll('.tab');
@@ -116,20 +116,20 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   rDash();
 });
-
+ 
 // ===== DASHBOARD =====
 function rDash() {
   var h = new Date().getHours();
   var g = document.getElementById('greet');
   if (g) g.textContent = (h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening') + ', athlete';
-
+ 
   document.getElementById('st').textContent = hist.length;
   var now = new Date(), ws = new Date(now);
   ws.setDate(now.getDate() - now.getDay()); ws.setHours(0,0,0,0);
   document.getElementById('sw').textContent = hist.filter(function(w) { return new Date(w.date) >= ws; }).length;
   var tv = hist.reduce(function(s, w) { return s + (w.volume || 0); }, 0);
   document.getElementById('sv').textContent = tv >= 1000 ? (tv/1000).toFixed(1) + 'k' : '' + tv;
-
+ 
   var streak = 0, tod = new Date(); tod.setHours(0,0,0,0);
   var srt = hist.slice().sort(function(a,b) { return new Date(b.date) - new Date(a.date); });
   if (srt.length) {
@@ -143,7 +143,7 @@ function rDash() {
     }
   }
   document.getElementById('ss').textContent = streak;
-
+ 
   var rl = document.getElementById('d-recent');
   if (!hist.length) {
     rl.innerHTML = '<div class="empty"><div class="eico">&#127947;</div><div class="esub">No workouts yet. Start a program below.</div></div>';
@@ -157,7 +157,7 @@ function rDash() {
         + '</button>';
     }).join('');
   }
-
+ 
   var pl = document.getElementById('d-progs');
   var pg = allProgs();
   var dashQ = (document.getElementById('dash-search') && document.getElementById('dash-search').value || '').toLowerCase().trim();
@@ -175,7 +175,7 @@ function rDash() {
     }).join('');
   }
 }
-
+ 
 // ===== PROGRAMS LIST =====
 function rProgs() {
   var pl = document.getElementById('prog-list');
@@ -209,7 +209,7 @@ function rProgs() {
       + '</button>';
   }).join('');
 }
-
+ 
 // ===== PROGRAM DETAIL =====
 function openProg(id) {
   curPid = id;
@@ -232,7 +232,7 @@ function openProg(id) {
   renderPh(p, 0);
   showView('program-detail');
 }
-
+ 
 function selPh(i) {
   curPhi = i;
   var tabs = document.querySelectorAll('.ptab');
@@ -240,7 +240,7 @@ function selPh(i) {
   var p = allProgs().filter(function(x){ return x.id === curPid; })[0];
   if (p) renderPh(p, i);
 }
-
+ 
 function renderPh(p, pi) {
   var ph = p.phases && p.phases[pi];
   var body = document.getElementById('pd-body');
@@ -269,7 +269,7 @@ function renderPh(p, pi) {
   });
   body.innerHTML = html;
 }
-
+ 
 function renderDay(day, di, pid, phi, wi) {
   var ec = day.exercises && day.exercises.length || 0;
   var tc = day.type === 'mobility' ? 'var(--acc3)' : day.type === 'trigger' ? 'var(--acc2)' : day.type === 'focus' ? 'var(--ok)' : 'var(--acc)';
@@ -300,7 +300,7 @@ function renderDay(day, di, pid, phi, wi) {
   html += '</div></div>';
   return html;
 }
-
+ 
 function renderER(e) {
   if (e.notes === 'separator') return '<div class="sep-row">' + esc(e.name) + '</div>';
   return '<div class="ex-row">'
@@ -310,12 +310,12 @@ function renderER(e) {
     + '<div class="ex-badges"><span class="badge-s">' + esc(e.sets || '—') + 'x</span><span class="badge-r">' + esc(e.reps || '—') + '</span></div>'
     + '</div>';
 }
-
+ 
 // ===== CORRECTIVE PROGRAM RENDERING =====
-
+ 
 // Storage keys for compass results
 function cpKey(progId) { return 'compass_' + progId; }
-
+ 
 function getCompassResults(progId) {
   return DB.get(cpKey(progId), {});
 }
@@ -324,7 +324,7 @@ function setCompassResult(progId, zoneId, val) {
   r[zoneId] = val; // 'pass', 'fail', or null
   DB.set(cpKey(progId), r);
 }
-
+ 
 function renderCorrective(p) {
   var c = p.corrective;
   if (!c) return '<div class="empty"><div class="esub">No corrective data</div></div>';
@@ -332,25 +332,25 @@ function renderCorrective(p) {
   if (c.program === 'prime-pro') return renderPrimePro(p);
   return '<div class="empty"><div class="esub">Unknown corrective type</div></div>';
 }
-
+ 
 // ---- MAPS PRIME ----
 function renderPrime(p) {
   var c = p.corrective;
   var results = getCompassResults(p.id);
   var html = '<div class="corr-wrap">';
-
+ 
   // HOW TO USE banner
   html += '<div class="corr-banner">'
     + '<div class="corr-banner-title">&#127919; How This Program Works</div>'
     + '<div class="corr-banner-body">MAPS Prime is a movement prep program, not a workout. Each time you train: (1) do your <strong>Pre-Primer</strong> before your workout, (2) use <strong>Ignition Exercises</strong> before each major lift, and (3) do your <strong>Post-Primer</strong> after. On off days, add <strong>Fortification Sessions</strong> for any zones you failed. Start by taking the Compass Test below.</div>'
     + '</div>';
-
+ 
   // STEP 1: COMPASS TEST
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 1</span><span class="corr-sec-title">Compass Test — Pass/Fail Each Zone</span></div>';
   html += '<div class="corr-sec-body">';
   html += '<p class="corr-note">Watch the Zone Test coaching videos in your MAPS Prime portal before testing. Mark each zone Pass or Fail.</p>';
-
+ 
   c.compassZones.forEach(function(z) {
     var res = results[z.id] || null;
     html += '<div class="zone-card" id="zc-' + p.id + '-' + z.id + '">'
@@ -369,22 +369,22 @@ function renderPrime(p) {
       + '</div>';
   });
   html += '</div></div>';
-
+ 
   // STEP 2: PRE-PRIMER
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 2</span><span class="corr-sec-title">Pre-Primer Session <span class="corr-timing">8–15 min · Before your workout</span></span></div>';
   html += '<div class="corr-sec-body">';
-
+ 
   var anyResult = Object.keys(results).length > 0;
   if (!anyResult) {
     html += '<p class="corr-note corr-muted">Complete the Compass Test above to see your personalized Pre-Primer movements.</p>';
   } else {
     html += '<p class="corr-note">Perform 1–3 movements per zone. If you <strong>passed</strong> a zone: 1 movement. If you <strong>failed</strong>: 1–3 movements. Max 6 movements total. Spend 1–3 min each at low-to-moderate intensity.</p>';
-
+ 
     // Suggested sessions based on failures
     var failedZones = c.compassZones.filter(function(z){ return results[z.id] === 'fail'; });
     var passedZones = c.compassZones.filter(function(z){ return results[z.id] === 'pass'; });
-
+ 
     if (failedZones.length > 0) {
       html += '<div class="corr-subsec-lbl">&#128204; Suggested Sessions for Your Failed Zones</div>';
       failedZones.forEach(function(z) {
@@ -401,7 +401,7 @@ function renderPrime(p) {
         html += '</div>';
       });
     }
-
+ 
     if (passedZones.length > 0) {
       html += '<div class="corr-subsec-lbl" style="margin-top:12px">&#10003; Passed Zones — Pick 1 movement each</div>';
       passedZones.forEach(function(z) {
@@ -415,7 +415,7 @@ function renderPrime(p) {
     }
   }
   html += '</div></div>';
-
+ 
   // STEP 3: IGNITION EXERCISES
   var allPass = c.compassZones.every(function(z){ return results[z.id] === 'pass'; });
   html += '<div class="corr-section">';
@@ -437,7 +437,7 @@ function renderPrime(p) {
     html += '</div>';
   }
   html += '</div></div>';
-
+ 
   // STEP 4: POST-PRIMER
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 4</span><span class="corr-sec-title">Post-Primer Session <span class="corr-timing">8–15 min · After your workout</span></span></div>';
@@ -446,7 +446,7 @@ function renderPrime(p) {
     html += '<p class="corr-note corr-muted">Complete the Compass Test above to see your Post-Primer movements.</p>';
   } else {
     html += '<p class="corr-note"><strong>Everyone:</strong> 1–3 Tension Poses total (not zone-specific). <strong>Failed zones:</strong> add 1–3 Foam Rolling and/or Static Stretches per failed zone (max 4 total). Hold Tension Poses 10–20 sec for 1–3 reps. Hold Foam Rolling / Static Stretches 20+ sec.</p>';
-
+ 
     // Tension poses - everyone
     html += '<div class="corr-subsec-lbl">Tension Poses (Everyone — 1–3 total)</div>';
     html += '<div class="prime-move-grid">';
@@ -454,7 +454,7 @@ function renderPrime(p) {
       html += '<span class="prime-move">' + esc(m) + '</span>';
     });
     html += '</div>';
-
+ 
     // Foam rolling & static by zone
     var failedZ = c.compassZones.filter(function(z){ return results[z.id] === 'fail'; });
     if (failedZ.length > 0) {
@@ -477,7 +477,7 @@ function renderPrime(p) {
     }
   }
   html += '</div></div>';
-
+ 
   // STEP 5: FORTIFICATION SESSIONS
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 5</span><span class="corr-sec-title">Fortification Sessions <span class="corr-timing">Off days · 1–3 sets · 8–12 reps</span></span></div>';
@@ -504,28 +504,28 @@ function renderPrime(p) {
     }
   }
   html += '</div></div>';
-
+ 
   html += '</div>'; // corr-wrap
   return html;
 }
-
+ 
 // ---- MAPS PRIME PRO ----
 function renderPrimePro(p) {
   var c = p.corrective;
   var results = getCompassResults(p.id);
   var html = '<div class="corr-wrap">';
-
+ 
   html += '<div class="corr-banner">'
     + '<div class="corr-banner-title">&#127919; How This Program Works</div>'
     + '<div class="corr-banner-body">MAPS Prime Pro targets 7 specific zones. For each zone you fail: do <strong>1 Repatterning Movement + 1 Tension Control Movement + 1 Active Control Movement</strong> per session. Sessions are <strong>1–10 minutes</strong> and should be done <strong>at least twice daily</strong> — frequency is the key to repatterning. Start with the Compass Test below.</div>'
     + '</div>';
-
+ 
   // COMPASS TEST
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 1</span><span class="corr-sec-title">Prime Pro Compass Test — 8 Tests, 7 Zones</span></div>';
   html += '<div class="corr-sec-body">';
   html += '<p class="corr-note">Watch all 8 coaching videos in your MAPS Prime Pro portal before testing. Mark each test Pass or Fail.</p>';
-
+ 
   c.compassZones.forEach(function(z) {
     var res = results[z.id] || null;
     html += '<div class="zone-card" id="zc-' + p.id + '-' + z.id + '">'
@@ -545,12 +545,12 @@ function renderPrimePro(p) {
       + '</div>';
   });
   html += '</div></div>';
-
+ 
   // SESSION DESIGN
   html += '<div class="corr-section">';
   html += '<div class="corr-sec-hd"><span class="corr-step">Step 2</span><span class="corr-sec-title">Build Your Daily Sessions</span></div>';
   html += '<div class="corr-sec-body">';
-
+ 
   var anyResult = Object.keys(results).length > 0;
   if (!anyResult) {
     html += '<p class="corr-note corr-muted">Complete the Compass Test above to see your personalized session design.</p>';
@@ -560,15 +560,15 @@ function renderPrimePro(p) {
       html += '<div class="corr-success">&#127881; Congratulations — you passed all 7 zones! Retest periodically to maintain your movement quality.</div>';
     } else {
       html += '<p class="corr-note">For each failed zone, perform <strong>1 Repatterning Movement + 1 Tension Control + 1 Active Control</strong>. Do this at least twice daily. Sessions should be 1–10 minutes. Focus on the most difficult movements first.</p>';
-
+ 
       failedZones.forEach(function(z) {
         var rp = c.repatterningMovements[z.id] || [];
         var cm = c.controlMovements[z.id] || {tension:[], active:[]};
-
+ 
         html += '<div class="pro-zone-block">'
           + '<div class="pro-zone-hd">Zone ' + z.num + ' — ' + esc(z.name) + ' <span class="pro-zone-area">(' + esc(z.area) + ')</span></div>'
           + '<div class="pro-zone-body">';
-
+ 
         // Repatterning
         html += '<div class="pro-move-group">'
           + '<div class="pro-move-type repat-type">&#128260; Repatterning Movement</div>'
@@ -577,7 +577,7 @@ function renderPrimePro(p) {
           html += '<div class="pro-move-row"><span class="pro-move-name">' + esc(m.name) + '</span><span class="pro-move-reps">' + esc(m.reps) + '</span></div>';
         });
         html += '</div>';
-
+ 
         // Tension Control
         html += '<div class="pro-move-group">'
           + '<div class="pro-move-type tension-type">&#128247; Tension Control Movement</div>'
@@ -586,7 +586,7 @@ function renderPrimePro(p) {
           html += '<div class="pro-move-row"><span class="pro-move-name">' + esc(m) + '</span></div>';
         });
         html += '</div>';
-
+ 
         // Active Control
         html += '<div class="pro-move-group">'
           + '<div class="pro-move-type active-type">&#9654; Active Control Movement</div>'
@@ -595,17 +595,17 @@ function renderPrimePro(p) {
           html += '<div class="pro-move-row"><span class="pro-move-name">' + esc(m) + '</span></div>';
         });
         html += '</div>';
-
+ 
         html += '</div></div>';
       });
     }
   }
   html += '</div></div>';
-
+ 
   html += '</div>'; // corr-wrap
   return html;
 }
-
+ 
 function setZone(progId, zoneId, val) {
   var results = getCompassResults(progId);
   // toggle off if clicking the same value
@@ -619,7 +619,7 @@ function setZone(progId, zoneId, val) {
   var zc = document.getElementById('zc-' + progId + '-' + zoneId);
   if (zc) zc.scrollIntoView({block:'nearest'});
 }
-
+ 
 function togW(el) {
   var b = el.nextElementSibling;
   var isOpen = b.style.display !== 'none';
@@ -634,7 +634,7 @@ function togD(el) {
   var arr = el.querySelector('span[style*="color:var(--t3)"]');
   if (arr) arr.innerHTML = isOpen ? '&#9660;' : '&#9650;';
 }
-
+ 
 function delProg() {
   if (!curPid || !confirm('Delete this program? This cannot be undone.')) return;
   if (curPid.endsWith('-builtin')) {
@@ -645,7 +645,7 @@ function delProg() {
   }
   showView('programs');
 }
-
+ 
 // ===== ACTIVE WORKOUT =====
 function startPW(pid, phi, wi, di) {
   var p = allProgs().filter(function(x){ return x.id === pid; })[0];
@@ -664,7 +664,7 @@ function startPW(pid, phi, wi, di) {
   });
   launch({name: day.name, meta: p.name + ' · ' + p.phases[phi].name, exercises: exercises});
 }
-
+ 
 function startQL() {
   var name = document.getElementById('ql-name').value.trim() || 'Quick Workout';
   var rows = document.querySelectorAll('.erb-row');
@@ -682,7 +682,7 @@ function startQL() {
   closeM('ql-modal');
   launch({name: name, meta: '', exercises: exercises});
 }
-
+ 
 function launch(data) {
   aw = data; wst = Date.now();
   document.getElementById('aw-name').textContent = data.name;
@@ -693,7 +693,7 @@ function launch(data) {
   var pill = document.getElementById('pill');
   pill.classList.add('show');
 }
-
+ 
 function renderAW() {
   var body = document.getElementById('aw-body');
   if (!aw) return;
@@ -728,12 +728,12 @@ function renderAW() {
   }).join('');
   updWP();
 }
-
+ 
 function us(eid, si, f, v) {
   var e = aw && aw.exercises.filter(function(x){ return x.id === eid; })[0];
   if (e && e.sets[si]) e.sets[si][f] = v;
 }
-
+ 
 function cs(eid, si) {
   var e = aw && aw.exercises.filter(function(x){ return x.id === eid; })[0];
   if (!e) return;
@@ -752,7 +752,7 @@ function cs(eid, si) {
   updWP();
   if (s.done) showRT(60);
 }
-
+ 
 function addS(eid) {
   var e = aw && aw.exercises.filter(function(x){ return x.id === eid; })[0];
   if (!e) return;
@@ -760,7 +760,7 @@ function addS(eid) {
   e.sets.push({num: e.sets.length + 1, w: l.w || '', r: l.r || '', done: false});
   renderAW();
 }
-
+ 
 function updWP() {
   if (!aw) return;
   var dn = 0, tot = 0;
@@ -770,7 +770,7 @@ function updWP() {
   });
   document.getElementById('aw-prog').textContent = dn + ' / ' + tot + ' sets done';
 }
-
+ 
 function getPrev(name, si) {
   for (var i = hist.length - 1; i >= 0; i--) {
     var w = hist[i];
@@ -782,7 +782,7 @@ function getPrev(name, si) {
   }
   return '—';
 }
-
+ 
 function startWT() {
   if (wt) clearInterval(wt);
   wt = setInterval(function() {
@@ -792,7 +792,7 @@ function startWT() {
     document.getElementById('pill-t').textContent = t;
   }, 1000);
 }
-
+ 
 function finishW() {
   if (!aw || !confirm('Finish this workout?')) return;
   clearInterval(wt);
@@ -820,14 +820,14 @@ function finishW() {
   document.getElementById('pill').classList.remove('show');
   showView('history');
 }
-
+ 
 function cancelW() {
   if (!confirm('Cancel? Progress will be lost.')) return;
   clearInterval(wt); aw = null;
   document.getElementById('pill').classList.remove('show');
   showView('dashboard');
 }
-
+ 
 // ===== REST TIMER =====
 function showRT(s) { setRT(s); document.getElementById('rt-ov').classList.add('show'); }
 function setRT(s) {
@@ -856,7 +856,7 @@ function beep() {
     });
   } catch(e) {}
 }
-
+ 
 // ===== HISTORY =====
 function rHist() {
   var list = document.getElementById('hist-list');
@@ -881,7 +881,7 @@ function rHist() {
       + '</button>';
   }).join('');
 }
-
+ 
 // ===== PROGRESS =====
 function rProg() {
   document.getElementById('pg-pr').textContent = Object.keys(prs).length;
@@ -892,7 +892,7 @@ function rProg() {
   document.getElementById('pg-ex').textContent = Object.keys(allEx).length;
   var durs = hist.filter(function(w){ return w.duration; }).map(function(w){ return w.duration; });
   document.getElementById('pg-dur').textContent = durs.length ? Math.round(durs.reduce(function(a,b){ return a+b; }, 0) / durs.length / 60) + 'm' : '—';
-
+ 
   var prl = document.getElementById('pr-list');
   var pe = Object.keys(prs).map(function(k){ return [k, prs[k]]; });
   if (pe.length) {
@@ -903,7 +903,7 @@ function rProg() {
   } else {
     prl.innerHTML = '<div class="empty" style="padding:16px"><div class="esub">Log some heavy sets to set PRs!</div></div>';
   }
-
+ 
   var sel = document.getElementById('ex-sel'), cv = sel.value;
   sel.innerHTML = '<option value="">Select exercise...</option>' + Object.keys(allEx).sort().map(function(n){
     return '<option value="' + esc(n) + '">' + esc(n) + '</option>';
@@ -911,7 +911,7 @@ function rProg() {
   if (cv) sel.value = cv;
   drawVC(); if (sel.value) drawEC();
 }
-
+ 
 function drawVC() {
   var c = document.getElementById('vc'); if (!c) return;
   var s = hist.slice().sort(function(a,b){ return new Date(a.date)-new Date(b.date); }).slice(-8);
@@ -932,7 +932,7 @@ function drawEC() {
   if (!pts.length) { clrC(c, 'No data for this exercise'); return; }
   drawLine(c, pts.map(function(p){ return p.val; }), pts.map(function(p){ return fd(p.date); }), '#30b8ff');
 }
-
+ 
 function clrC(cv, msg) {
   cv.width = cv.offsetWidth || 300; cv.height = 180;
   var ctx = cv.getContext('2d');
@@ -993,13 +993,13 @@ function rrc(ctx, x, y, w, h, r) {
   ctx.beginPath(); ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
   ctx.lineTo(x+w, y+h); ctx.lineTo(x, y+h); ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y); ctx.closePath();
 }
-
+ 
 // ===== FILE UPLOAD =====
 function doDO(e) { e.preventDefault(); document.getElementById('uz').classList.add('dov'); }
 function doDL() { document.getElementById('uz').classList.remove('dov'); }
 function doDrop(e) { e.preventDefault(); document.getElementById('uz').classList.remove('dov'); var f = e.dataTransfer && e.dataTransfer.files[0]; if (f) processFile(f); }
 function doFS(e) { var f = e.target && e.target.files[0]; if (f) processFile(f); e.target.value = ''; }
-
+ 
 async function processFile(file) {
   var uz = document.getElementById('uz');
   uz.style.display = 'none';
@@ -1025,7 +1025,7 @@ async function processFile(file) {
     alert('Error: ' + err.message + '\n\nTip: Text-based PDFs work best. If scanned, copy text into a .txt file first.');
   }
 }
-
+ 
 async function extractPDF(file) {
   return new Promise(function(res, rej) {
     var r = new FileReader();
@@ -1042,7 +1042,7 @@ async function extractPDF(file) {
     r.readAsArrayBuffer(file);
   });
 }
-
+ 
 async function parseAI(content, filename) {
   var resp = await fetch('https://YOUR-WORKER-NAME.YOUR-USERNAME.workers.dev/api/claude', {
     method: 'POST',
@@ -1070,7 +1070,7 @@ async function parseAI(content, filename) {
   });
   return parsed;
 }
-
+ 
 // ===== QUICK LOG / CREATE =====
 function openQL() {
   document.getElementById('ql-name').value = '';
@@ -1107,16 +1107,16 @@ function createProg() {
   uProgs.push(p); DB.set('programs', uProgs);
   closeM('cp-modal'); rProgs(); openProg(p.id);
 }
-
+ 
 function openM(id) { document.getElementById(id).classList.add('show'); }
 function closeM(id) { document.getElementById(id).classList.remove('show'); }
-
+ 
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.modal-ov').forEach(function(m) {
     m.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('show'); });
   });
 });
-
+ 
 // ===== UTILS =====
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 function fv(v) { if (!v) return '0'; return v >= 1000 ? (v/1000).toFixed(1) + 'k' : '' + Math.round(v); }
