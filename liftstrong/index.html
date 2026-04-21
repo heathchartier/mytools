@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Lift Strong</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/liftstrong/manifest.json">
+<link rel="apple-touch-icon" href="/icons/liftstrong-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lift Strong">
+<meta name="theme-color" content="#0d0d12">
+<meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+<header id="topbar">
+  <div id="logo">LIFT STRONG</div>
+  <div id="nav-desktop">
+    <button class="nd active" data-view="dashboard">Dashboard</button>
+    <button class="nd" data-view="programs">Programs</button>
+    <button class="nd" data-view="history">History</button>
+    <button class="nd" data-view="progress">Progress</button>
+  </div>
+  <div id="topbar-right">
+    <button id="pill" onclick="showView('active-workout')">&#9889; <span id="pill-t">0:00</span></button>
+    <button class="btn-p btn-sm" onclick="openQL()">+ Log</button>
+  </div>
+</header>
+
+<div id="page-wrap">
+
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="view active">
+    <div class="ph"><div><h1 class="ptitle">Dashboard</h1><p class="psub" id="greet">Good morning</p></div><button class="btn-s btn-sm" onclick="showView('programs')">Programs &rarr;</button></div>
+    <div class="stat-grid">
+      <div class="stat-card s1"><div class="sl">Workouts</div><div class="sv" id="st">0</div><div class="ss">all time</div></div>
+      <div class="stat-card s2"><div class="sl">This Week</div><div class="sv" id="sw">0</div><div class="ss">sessions</div></div>
+      <div class="stat-card s3"><div class="sl">Volume</div><div class="sv" id="sv">0</div><div class="ss">lbs lifted</div></div>
+      <div class="stat-card s4"><div class="sl">Streak</div><div class="sv" id="ss">0</div><div class="ss">days</div></div>
+    </div>
+    <div class="sec-lbl">Recent Workouts</div>
+    <div class="card" id="d-recent"></div>
+    <div class="sec-lbl">Programs</div>
+    <div class="search-wrap"><input class="search-inp" id="dash-search" type="text" placeholder="&#128269; Search programs..." oninput="rDash()" autocomplete="off"></div>
+    <div class="card" id="d-progs"></div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section id="view-programs" class="view">
+    <div class="ph"><div><h1 class="ptitle">Programs</h1><p class="psub">Import or create plans</p></div><button class="btn-s btn-sm" onclick="openCP()">+ Create</button></div>
+    <div class="search-wrap"><input class="search-inp" id="prog-search" type="text" placeholder="&#128269; Search programs..." oninput="rProgs()" autocomplete="off"></div>
+    <div id="save-banner" class="save-banner">&#10003; Program saved! It will be here every time you return.</div>
+    <div id="uz" class="upload-zone" onclick="document.getElementById('fi').click()" ondragover="doDO(event)" ondragleave="doDL()" ondrop="doDrop(event)">
+      <input type="file" id="fi" accept=".pdf,.txt" onchange="doFS(event)">
+      <div class="uico">&#128196;</div>
+      <div class="utitle">Import a Program</div>
+      <div class="uhint">Tap to upload a PDF or TXT &mdash; AI extracts all phases, exercises &amp; schedules and saves it permanently</div>
+      <div class="uchips">
+        <span class="chip cg">&#10003; PDF</span>
+        <span class="chip cb">&#10003; TXT</span>
+        <span class="chip cy">&#10003; Phases</span>
+        <span class="chip co">&#10003; Sets &amp; Reps</span>
+      </div>
+    </div>
+    <div id="ai-load" class="ai-load">
+      <div class="spin"></div>
+      <div class="ai-txt">Analyzing program...</div>
+      <div class="ai-sub" id="ai-sub">Extracting exercises, phases &amp; schedule</div>
+    </div>
+    <div id="prog-list"></div>
+    <div id="prog-empty" class="empty" style="display:none">
+      <div class="eico">&#128170;</div>
+      <div class="etitle">No programs yet</div>
+      <div class="esub">Upload a PDF or create a program manually</div>
+    </div>
+  </section>
+
+  <!-- PROGRAM DETAIL -->
+  <section id="view-program-detail" class="view" style="padding:0">
+    <div id="pd-back"><button class="back-btn" onclick="showView('programs')">&larr; Programs</button><span id="pd-bc"></span></div>
+    <div id="pd-hdr">
+      <div class="pd-top">
+        <div><h2 id="pd-title"></h2><p id="pd-desc"></p></div>
+        <button class="btn-d btn-sm" onclick="delProg()">Delete</button>
+      </div>
+    </div>
+    <div id="phase-scroll"></div>
+    <div id="pd-body"></div>
+  </section>
+
+  <!-- ACTIVE WORKOUT -->
+  <section id="view-active-workout" class="view" style="padding:0">
+    <div id="wtop">
+      <div><div id="aw-name">Workout</div><div id="aw-meta"></div></div>
+      <div id="aw-elapsed">0:00</div>
+    </div>
+    <div id="aw-body"></div>
+    <div id="wfoot">
+      <div id="aw-prog">0 / 0 sets done</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-s btn-sm" onclick="cancelW()">Cancel</button>
+        <button class="btn-p btn-sm" onclick="finishW()">Finish</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <section id="view-history" class="view">
+    <div class="ph"><div><h1 class="ptitle">History</h1><p class="psub">Completed workouts</p></div></div>
+    <div id="hist-list"></div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section id="view-progress" class="view">
+    <div class="ph"><div><h1 class="ptitle">Progress</h1><p class="psub">Track your gains</p></div></div>
+    <div class="stat-grid">
+      <div class="stat-card s1"><div class="sl">PRs Set</div><div class="sv" id="pg-pr">0</div><div class="ss">records</div></div>
+      <div class="stat-card s2"><div class="sl">Best Session</div><div class="sv" id="pg-vol">0</div><div class="ss">lbs volume</div></div>
+      <div class="stat-card s3"><div class="sl">Exercises</div><div class="sv" id="pg-ex">0</div><div class="ss">unique moves</div></div>
+      <div class="stat-card s4"><div class="sl">Avg Time</div><div class="sv" id="pg-dur">0m</div><div class="ss">per session</div></div>
+    </div>
+    <div class="card"><div class="card-h">Personal Records</div><div class="card-b" id="pr-list"></div></div>
+    <div class="card"><div class="card-h">Volume Over Time</div><div class="card-b"><div class="chart-area"><canvas id="vc"></canvas></div></div></div>
+    <div class="card"><div class="card-h">Exercise Progress</div><div class="card-b"><select id="ex-sel" class="ex-sel" onchange="drawEC()"><option value="">Select exercise...</option></select><div class="chart-area"><canvas id="ec"></canvas></div></div></div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<!-- BOTTOM TAB BAR -->
+<nav id="tab-bar">
+  <button class="tab active" data-view="dashboard"><span>&#127968;</span>Dashboard</button>
+  <button class="tab" data-view="programs"><span>&#128203;</span>Programs</button>
+  <button class="tab" data-view="history"><span>&#128197;</span>History</button>
+  <button class="tab" data-view="progress"><span>&#128200;</span>Progress</button>
+</nav>
+
+<!-- REST TIMER -->
+<div id="rt-ov">
+  <div id="rt-box">
+    <div class="rt-lbl">REST TIMER</div>
+    <div id="rt-num">1:00</div>
+    <div id="rt-bar"><div id="rt-fill"></div></div>
+    <div id="rt-pre">
+      <button onclick="setRT(30)">:30</button>
+      <button onclick="setRT(60)">1:00</button>
+      <button onclick="setRT(90)">1:30</button>
+      <button onclick="setRT(120)">2:00</button>
+      <button onclick="setRT(180)">3:00</button>
+    </div>
+    <div id="rt-ctrl">
+      <button class="btn-s btn-sm" id="rt-pbtn" onclick="togRT()">Pause</button>
+      <button class="btn-p btn-sm" onclick="closeRT()">Skip</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK LOG MODAL -->
+<div class="modal-ov" id="ql-modal">
+  <div class="modal-box">
+    <div class="modal-hd"><span>Log Workout</span><button class="modal-close" onclick="closeM('ql-modal')">&#10005;</button></div>
+    <div class="modal-body">
+      <div class="fg"><label class="fl">Workout Name</label><input class="fi" id="ql-name" placeholder="e.g. Upper Body A" autocomplete="off"></div>
+      <div class="fg"><label class="fl">Exercises</label><div id="ex-builder"></div><button class="btn-g btn-sm" style="width:100%;margin-top:8px" onclick="addER()">+ Add Exercise</button></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-s btn-sm" onclick="closeM('ql-modal')">Cancel</button>
+      <button class="btn-p btn-sm" onclick="startQL()">Start Workout</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE PROGRAM MODAL -->
+<div class="modal-ov" id="cp-modal">
+  <div class="modal-box">
+    <div class="modal-hd"><span>Create Program</span><button class="modal-close" onclick="closeM('cp-modal')">&#10005;</button></div>
+    <div class="modal-body">
+      <div class="fg"><label class="fl">Program Name</label><input class="fi" id="cp-name" placeholder="e.g. 5/3/1 Strength" autocomplete="off"></div>
+      <div class="fg"><label class="fl">Description</label><textarea class="fta" id="cp-desc" placeholder="Brief description..."></textarea></div>
+      <div class="fg"><label class="fl">Duration</label><input class="fi" id="cp-dur" placeholder="e.g. 12 weeks" autocomplete="off"></div>
+      <div class="fg"><label class="fl">Difficulty</label><select class="fse" id="cp-diff"><option>Beginner</option><option selected>Intermediate</option><option>Advanced</option></select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-s btn-sm" onclick="closeM('cp-modal')">Cancel</button>
+      <button class="btn-p btn-sm" onclick="createProg()">Create</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
