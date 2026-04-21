@@ -275,6 +275,7 @@ function renderDay(day, di, pid, phi, wi) {
   var tc = day.type === 'mobility' ? 'var(--acc3)' : day.type === 'trigger' ? 'var(--acc2)' : day.type === 'focus' ? 'var(--ok)' : 'var(--acc)';
   var tl = {workout:'Workout',mobility:'Mobility',trigger:'Trigger',focus:'Focus'}[day.type] || 'Workout';
   var html = '<div class="day-card">'
+    + '<div class="day-card-row">'
     + '<button class="day-hd" onclick="togD(this)">'
     + '<div style="flex:1;min-width:0">'
     + '<div style="display:flex;align-items:center;gap:7px">'
@@ -283,10 +284,10 @@ function renderDay(day, di, pid, phi, wi) {
     + '</div>'
     + '<div class="day-meta">' + ec + ' exercise' + (ec !== 1 ? 's' : '') + ' &middot; <span style="color:' + tc + '">' + tl + '</span>' + (day.focus ? ' &middot; ' + esc(day.focus) : '') + '</div>'
     + '</div>'
-    + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:8px">'
-    + '<button class="btn-p btn-xs" onclick="event.stopPropagation();startPW(\'' + pid + '\',' + phi + ',' + wi + ',' + di + ')">Start</button>'
-    + '<span class="day-arr" style="color:var(--t3);font-size:11px">&#9660;</span>'
-    + '</div></button>'
+    + '<span class="day-arr" style="color:var(--t3);font-size:11px;margin-left:8px">&#9660;</span>'
+    + '</button>'
+    + '<button class="btn-p btn-xs day-start-btn" onclick="startPW(\'' + pid + '\',' + phi + ',' + wi + ',' + di + ')">Start</button>'
+    + '</div>'
     + '<div class="day-body" style="display:none">';
   if (day.isFocus) {
     html += '<div class="focus-box"><div class="focus-lbl">&#127919; Choose Your Weak Point &mdash; 2-3 exercises x 15 reps</div><div class="focus-grid">';
@@ -621,21 +622,19 @@ function setZone(progId, zoneId, val) {
 }
 
 function togW(el) {
-  var b = el.parentElement.querySelector('.week-body');
-  if (!b) return;
+  var b = el.nextElementSibling;
   var isOpen = b.style.display !== 'none';
   b.style.display = isOpen ? 'none' : 'flex';
   var arr = el.querySelector('.week-arr');
   if (arr) arr.innerHTML = isOpen ? '&#9660;' : '&#9650;';
 }
 function togD(el) {
-  var card = el.closest('.day-card');
-  if (!card) return;
-  var b = card.querySelector('.day-body');
-  if (!b) return;
+  // el is day-hd button, parent is day-card-row, day-body is next sibling of day-card-row
+  var row = el.parentElement;
+  var b = row.nextElementSibling;
   var isOpen = b.style.display !== 'none';
   b.style.display = isOpen ? 'none' : 'flex';
-  var arr = el.querySelector('.day-arr') || el.parentElement.querySelector('.day-arr');
+  var arr = el.querySelector('.day-arr');
   if (arr) arr.innerHTML = isOpen ? '&#9660;' : '&#9650;';
 }
 
