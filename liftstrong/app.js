@@ -843,21 +843,22 @@ function cancelW() {
 
 // ===== REST TIMER =====
 var _rtM = 2, _rtS = 0; // selected minutes and seconds — default 2:00
+var _rtMinListener = null, _rtSecListener = null;
 
 var RT_MINS = [0,1,2,3,4,5];
 var RT_SECS = [0,5,10,15,20,25,30,35,40,45,50,55];
 
 function _rtBuildWheel(wheelEl, innerEl, values, selectedVal) {
-  // Add highlight bar
+  // highlight bar
   if (!wheelEl.querySelector('.rt-wheel-hl')) {
     var hl = document.createElement('div');
     hl.className = 'rt-wheel-hl';
     wheelEl.appendChild(hl);
   }
   innerEl.innerHTML = '';
-  // top spacer so first item can scroll to center
+  // top spacer
   var sp = document.createElement('div');
-  sp.style.height = '40px'; sp.style.flexShrink = '0';
+  sp.className = 'rt-spacer';
   innerEl.appendChild(sp);
   values.forEach(function(v) {
     var el = document.createElement('div');
@@ -868,49 +869,70 @@ function _rtBuildWheel(wheelEl, innerEl, values, selectedVal) {
   // bottom spacer
   var sp2 = sp.cloneNode(false);
   innerEl.appendChild(sp2);
-  // Scroll selected item to center — set immediately and again after paint for iOS
+  // scroll selected to center — set now and retry after paint (iOS needs both)
   var idx = values.indexOf(selectedVal);
   if (idx >= 0) {
-    var target = idx * 40;
+    var target = 80 + idx * 40;
     wheelEl.scrollTop = target;
-    // iOS sometimes ignores synchronous scrollTop before first paint — belt-and-suspenders
     requestAnimationFrame(function() {
       wheelEl.scrollTop = target;
-      setTimeout(function() { wheelEl.scrollTop = target; }, 50);
+      setTimeout(function() { wheelEl.scrollTop = target; }, 60);
     });
   }
 }
 
-function _rtAttachScroll(wheelEl, values, onChanged) {
-  // Remove old listener by cloning
-  var fresh = wheelEl.cloneNode(true);
-  wheelEl.parentNode.replaceChild(fresh, wheelEl);
+function _rtAttachMinScroll(wheelEl) {
+  if (_rtMinListener) wheelEl.removeEventListener('scroll', _rtMinListener);
   var t;
-  fresh.addEventListener('scroll', function() {
+  _rtMinListener = function() {
+    var w = wheelEl;
     clearTimeout(t);
-    var w = fresh;
     t = setTimeout(function() {
-      var raw = Math.round(w.scrollTop / 40);
+      var raw = Math.round((w.scrollTop - 80) / 40);
+      var idx = Math.max(0, Math.min(RT_MINS.length - 1, raw));
+      w.scrollTop = 80 + idx * 40;
+      var val = RT_MINS[idx];
+      w.querySelectorAll('.rt-item').forEach(function(el, i) { el.classList.toggle('sel', i === idx); });
+      _rtM = val;
+      // rebuild sec wheel if needed
+      var sv = (_rtM === 5) ? [0] : RT_SECS;
+      if (_rtM === 5) _rtS = 0;
+      var se = document.getElementById('rt-wsec');
+      var si = document.getElementById('rt-wsec-inner');
+      if (se && si) {
+        _rtBuildWheel(se, si, sv, _rtS);
+        _rtAttachSecScroll(se, sv);
+      }
+      _rtApply();
+    }, 120);
+  };
+  wheelEl.addEventListener('scroll', _rtMinListener, {passive: true});
+}
+
+function _rtAttachSecScroll(wheelEl, values) {
+  if (_rtSecListener) wheelEl.removeEventListener('scroll', _rtSecListener);
+  var t;
+  _rtSecListener = function() {
+    var w = wheelEl;
+    clearTimeout(t);
+    t = setTimeout(function() {
+      var raw = Math.round((w.scrollTop - 80) / 40);
       var idx = Math.max(0, Math.min(values.length - 1, raw));
-      // snap
-      w.scrollTop = idx * 40;
+      w.scrollTop = 80 + idx * 40;
       var val = values[idx];
-      // update highlight
-      var items = w.querySelectorAll('.rt-item');
-      items.forEach(function(el, i) {
-        el.classList.toggle('sel', i === idx);
-      });
-      onChanged(val);
-    }, 100);
-  }, {passive: true});
-  return fresh;
+      w.querySelectorAll('.rt-item').forEach(function(el, i) { el.classList.toggle('sel', i === idx); });
+      _rtS = val;
+      _rtApply();
+    }, 120);
+  };
+  wheelEl.addEventListener('scroll', _rtSecListener, {passive: true});
 }
 
 function _rtInitWheels() {
-  var minEl  = document.getElementById('rt-wmin');
-  var minIn  = document.getElementById('rt-wmin-inner');
-  var secEl  = document.getElementById('rt-wsec');
-  var secIn  = document.getElementById('rt-wsec-inner');
+  var minEl = document.getElementById('rt-wmin');
+  var minIn = document.getElementById('rt-wmin-inner');
+  var secEl = document.getElementById('rt-wsec');
+  var secIn = document.getElementById('rt-wsec-inner');
   if (!minEl || !secEl) return;
 
   var secVals = (_rtM === 5) ? [0] : RT_SECS;
@@ -919,24 +941,8 @@ function _rtInitWheels() {
   _rtBuildWheel(minEl, minIn, RT_MINS, _rtM);
   _rtBuildWheel(secEl, secIn, secVals, _rtS);
 
-  minEl = _rtAttachScroll(minEl, RT_MINS, function(v) {
-    _rtM = v;
-    var sv = (_rtM === 5) ? [0] : RT_SECS;
-    if (_rtM === 5) _rtS = 0;
-    // rebuild sec wheel
-    var se = document.getElementById('rt-wsec');
-    var si = document.getElementById('rt-wsec-inner');
-    if (se && si) {
-      _rtBuildWheel(se, si, sv, _rtS);
-      _rtAttachScroll(se, sv, function(s) { _rtS = s; _rtApply(); });
-    }
-    _rtApply();
-  });
-
-  _rtAttachScroll(secEl, secVals, function(v) {
-    _rtS = v;
-    _rtApply();
-  });
+  _rtAttachMinScroll(minEl);
+  _rtAttachSecScroll(secEl, secVals);
 }
 
 function _rtApply() {
