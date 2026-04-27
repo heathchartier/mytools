@@ -141,21 +141,21 @@
 <div id="rt-ov">
   <div id="rt-box">
     <div class="rt-lbl">REST TIMER</div>
-    <div id="rt-num">1:00</div>
+    <div id="rt-num">2:00</div>
     <div id="rt-bar"><div id="rt-fill"></div></div>
     <div id="rt-wheel-wrap">
-      <div class="rt-wheel-col">
-        <div class="rt-wheel" id="rt-wmin">
-          <div class="rt-wheel-inner" id="rt-wmin-inner"></div>
-        </div>
-        <div class="rt-wheel-lbl">min</div>
+      <div class="rt-picker-col">
+        <div class="rt-picker-btn" onclick="rtAdj('m',1)">+</div>
+        <div class="rt-picker-val" id="rt-dmin">02</div>
+        <div class="rt-picker-btn" onclick="rtAdj('m',-1)">−</div>
+        <div class="rt-picker-lbl">min</div>
       </div>
-      <div class="rt-wheel-sep">:</div>
-      <div class="rt-wheel-col">
-        <div class="rt-wheel" id="rt-wsec">
-          <div class="rt-wheel-inner" id="rt-wsec-inner"></div>
-        </div>
-        <div class="rt-wheel-lbl">sec</div>
+      <div class="rt-picker-sep">:</div>
+      <div class="rt-picker-col">
+        <div class="rt-picker-btn" onclick="rtAdj('s',1)">+</div>
+        <div class="rt-picker-val" id="rt-dsec">00</div>
+        <div class="rt-picker-btn" onclick="rtAdj('s',-1)">−</div>
+        <div class="rt-picker-lbl">sec</div>
       </div>
     </div>
     <div id="rt-ctrl">

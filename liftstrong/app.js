@@ -763,7 +763,7 @@ function cs(eid, si) {
   var ctr = document.getElementById('ac-' + eid);
   if (ctr) { ctr.textContent = dn + '/' + e.sets.length; ctr.style.color = dn === e.sets.length ? 'var(--ok)' : 'var(--t2)'; }
   updWP();
-  if (s.done) showRT(60);
+  if (s.done) showRT();
 }
 
 function addS(eid) {
@@ -842,128 +842,52 @@ function cancelW() {
 }
 
 // ===== REST TIMER =====
-var _rtM = 2, _rtS = 0; // selected minutes and seconds — default 2:00
-var _rtMinListener = null, _rtSecListener = null;
+var _rtM = 2, _rtS = 0; // minutes and seconds — default 2:00
 
 var RT_MINS = [0,1,2,3,4,5];
 var RT_SECS = [0,5,10,15,20,25,30,35,40,45,50,55];
 
-function _rtBuildWheel(wheelEl, innerEl, values, selectedVal) {
-  // highlight bar
-  if (!wheelEl.querySelector('.rt-wheel-hl')) {
-    var hl = document.createElement('div');
-    hl.className = 'rt-wheel-hl';
-    wheelEl.appendChild(hl);
+// Update the picker display labels
+function _rtRender() {
+  var dm = document.getElementById('rt-dmin');
+  var ds = document.getElementById('rt-dsec');
+  if (dm) dm.textContent = String(_rtM).padStart(2,'0');
+  if (ds) ds.textContent = String(_rtS).padStart(2,'0');
+}
+
+// Adjust minutes or seconds via +/- buttons
+function rtAdj(unit, dir) {
+  if (unit === 'm') {
+    _rtM = Math.max(0, Math.min(5, _rtM + dir));
+    if (_rtM === 5) _rtS = 0;
+  } else {
+    if (_rtM === 5) { _rtS = 0; }
+    else {
+      var idx = RT_SECS.indexOf(_rtS);
+      idx = Math.max(0, Math.min(RT_SECS.length - 1, idx + dir));
+      _rtS = RT_SECS[idx];
+    }
   }
-  innerEl.innerHTML = '';
-  // top spacer
-  var sp = document.createElement('div');
-  sp.className = 'rt-spacer';
-  innerEl.appendChild(sp);
-  values.forEach(function(v) {
-    var el = document.createElement('div');
-    el.className = 'rt-item' + (v === selectedVal ? ' sel' : '');
-    el.textContent = String(v).padStart(2, '0');
-    innerEl.appendChild(el);
-  });
-  // bottom spacer
-  var sp2 = sp.cloneNode(false);
-  innerEl.appendChild(sp2);
-  // scroll selected to center — set now and retry after paint (iOS needs both)
-  var idx = values.indexOf(selectedVal);
-  if (idx >= 0) {
-    var target = 80 + idx * 40;
-    wheelEl.scrollTop = target;
-    requestAnimationFrame(function() {
-      wheelEl.scrollTop = target;
-      setTimeout(function() { wheelEl.scrollTop = target; }, 60);
-    });
-  }
-}
-
-function _rtAttachMinScroll(wheelEl) {
-  if (_rtMinListener) wheelEl.removeEventListener('scroll', _rtMinListener);
-  var t;
-  _rtMinListener = function() {
-    var w = wheelEl;
-    clearTimeout(t);
-    t = setTimeout(function() {
-      var raw = Math.round((w.scrollTop - 80) / 40);
-      var idx = Math.max(0, Math.min(RT_MINS.length - 1, raw));
-      w.scrollTop = 80 + idx * 40;
-      var val = RT_MINS[idx];
-      w.querySelectorAll('.rt-item').forEach(function(el, i) { el.classList.toggle('sel', i === idx); });
-      _rtM = val;
-      // rebuild sec wheel if needed
-      var sv = (_rtM === 5) ? [0] : RT_SECS;
-      if (_rtM === 5) _rtS = 0;
-      var se = document.getElementById('rt-wsec');
-      var si = document.getElementById('rt-wsec-inner');
-      if (se && si) {
-        _rtBuildWheel(se, si, sv, _rtS);
-        _rtAttachSecScroll(se, sv);
-      }
-      _rtApply();
-    }, 120);
-  };
-  wheelEl.addEventListener('scroll', _rtMinListener, {passive: true});
-}
-
-function _rtAttachSecScroll(wheelEl, values) {
-  if (_rtSecListener) wheelEl.removeEventListener('scroll', _rtSecListener);
-  var t;
-  _rtSecListener = function() {
-    var w = wheelEl;
-    clearTimeout(t);
-    t = setTimeout(function() {
-      var raw = Math.round((w.scrollTop - 80) / 40);
-      var idx = Math.max(0, Math.min(values.length - 1, raw));
-      w.scrollTop = 80 + idx * 40;
-      var val = values[idx];
-      w.querySelectorAll('.rt-item').forEach(function(el, i) { el.classList.toggle('sel', i === idx); });
-      _rtS = val;
-      _rtApply();
-    }, 120);
-  };
-  wheelEl.addEventListener('scroll', _rtSecListener, {passive: true});
-}
-
-function _rtInitWheels() {
-  var minEl = document.getElementById('rt-wmin');
-  var minIn = document.getElementById('rt-wmin-inner');
-  var secEl = document.getElementById('rt-wsec');
-  var secIn = document.getElementById('rt-wsec-inner');
-  if (!minEl || !secEl) return;
-
-  var secVals = (_rtM === 5) ? [0] : RT_SECS;
-  if (_rtM === 5) _rtS = 0;
-
-  _rtBuildWheel(minEl, minIn, RT_MINS, _rtM);
-  _rtBuildWheel(secEl, secIn, secVals, _rtS);
-
-  _rtAttachMinScroll(minEl);
-  _rtAttachSecScroll(secEl, secVals);
+  _rtApply();
 }
 
 function _rtApply() {
   var total = Math.max(5, _rtM * 60 + _rtS);
   rtLast = total;
+  _rtRender();
   setRT(total);
 }
 
-function showRT(s) {
-  // use the user's last chosen time if they've adjusted it this workout
-  s = rtLast;
+function showRT() {
+  // Restore last chosen time for this workout
+  var s = rtLast;
   _rtM = Math.floor(s / 60);
   _rtS = Math.round((s % 60) / 5) * 5;
   if (_rtS >= 60) { _rtM++; _rtS = 0; }
   if (_rtM > 5)   { _rtM = 5; _rtS = 0; }
+  _rtRender();
   setRT(s);
   document.getElementById('rt-ov').classList.add('show');
-  // init wheels after the overlay is visible so scrollTop works
-  requestAnimationFrame(function() {
-    requestAnimationFrame(_rtInitWheels);
-  });
 }
 function setRT(s) {
   if (rtIv) clearInterval(rtIv);
