@@ -649,6 +649,7 @@ table.st tr.done-row td { opacity: 0.45; }
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: manipulation;
   transition: background 0.1s;
 }
 .rt-picker-btn:active { background: var(--bg4); }
